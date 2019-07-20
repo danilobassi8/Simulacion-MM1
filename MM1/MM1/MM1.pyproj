@@ -22,10 +22,6 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Graficos.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MM1.py" />
     <Compile Include="module1.py">
       <SubType>Code</SubType>
     </Compile>

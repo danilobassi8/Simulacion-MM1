@@ -1,7 +1,9 @@
 import numpy as np
 import random as rand
 import math
+import os
 
+os.system("cls") #para limpiar la pantalla al iniciar.
 
 class RutinaInicio:
     def Inicializacion():
@@ -69,7 +71,7 @@ class LibreriaDeRutinas:
 
 class Arrivo:
     tiempoOcurrencia = -1
-    nombre = "Evento: Arrivo"
+    nombre = "Evento: Arrivo"  #CUIDADO! si se cambia, cambiar en Graficar()
     def __init__(self):
         global clock
         self.tiempoOcurrencia = ListaEventos.tiempoArribo
@@ -114,7 +116,7 @@ class Arrivo:
 
 class Partida:
     tiempoOcurrencia = -1
-    nombre = "Evento: Partida"
+    nombre = "Evento: Partida" #CUIDADO! si se cambia, cambiar en Graficar()
     def __init__(self):
         global clock
         self.tiempoOcurrencia = ListaEventos.tiempoPartida
@@ -144,7 +146,7 @@ class Partida:
 
         if(activaOtroEvento):
             proxEvento = tiempoDeArrivos[0]
-            proxEvento.nombre = "Evento: De la cola al Servidor."
+            proxEvento.nombre = "Evento: De la cola al Servidor." #CUIDADO! cambiar en Graficar()
             proxEvento.RutinaEventos()
 
 
@@ -168,33 +170,43 @@ def GraficarEstadoDelSistema(objProxEvent):
      
      numeroDeClientesEnCola = len(tiempoDeArrivos)
      #----------------------------------------------------------------------------------------------------#
-     print("#---------------------------------------------[" + str(contadorDelSistema) + "]----------------------------------------------------#")
-     print("Estado del sistema numero: " + str(contadorDelSistema))
+     print("\u001b[35m#---------------------------------------------\u001b[35;1m[" + str(contadorDelSistema) + "]\u001b[0m\u001b[35m----------------------------------------------------#\u001b[0m")
+     
      if(contadorDelSistema == 0):
-         print("INICIALIZACION DEL SISTEMA")
+         print("\u001b[37m Evento: \u001b[32m INICIALIZACION DEL SISTEMA")
      else:
-         print(objProxEvent.nombre)
+         if(objProxEvent.nombre == "Evento: Arrivo"):
+             print("\u001b[32mEvento:\u001b[37m Arribo")
+         else:
+             if(objProxEvent.nombre == "Evento: De la cola al Servidor."):
+                print("\u001b[32mEvento:\u001b[37m De la cola al Servidor.")
+             else:   
+                print("\u001b[32mEvento:\u001b[37m Partida")
+
 
 
      print()
-     print("Reloj: " + str(clock))
+     print("\u001b[32mReloj: \u001b[37m" + str(clock))
      if(estadoServidor == 0):
-         print("Estado del Servidor: Desocupado")
+         print("\u001b[32mEstado del Servidor: \u001b[37mDesocupado")
      else:
-         print("Estado del Servidor: Ocupado")
+         print("\u001b[32mEstado del Servidor: \u001b[37mOcupado")
 
-     print("Numero de Clientes en Cola: ", str(numeroDeClientesEnCola))
-     print("tiempoDeArrivos: ")
-     print("******----")
+     print("\u001b[32mNumero de Clientes en Cola: \u001b[37m", str(numeroDeClientesEnCola))
+     
+     print("\u001b[34m")
+     print("Tiempos en Cola: \u001b[36m")
+     print("--------" )
+     print()
      if(len(tiempoDeArrivos) == 0):
          print("Vacio")
      else:
          for i in tiempoDeArrivos:
              print(i.tiempoOcurrencia)
      print()
-     print("******----")
+     print("--------")
      print()
-     print("Tiempo del ultimo Evento: " + str(tiempoUltimoEvento))
+     print("\u001b[32mTiempo del ultimo Evento: \u001b[37m" + str(tiempoUltimoEvento))
      print()
      contadorDelSistema = contadorDelSistema + 1
 
