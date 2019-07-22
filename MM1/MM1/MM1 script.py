@@ -4,7 +4,6 @@ import math
 import os
 
 os.system("cls") #para limpiar la pantalla al iniciar.
-
 class RutinaInicio:
     def Inicializacion():
         global clock
@@ -37,7 +36,7 @@ class ListaEventos(object):
     tiempoPartida = 0
 
     mediaArribos = 5
-    mediaPartida = 3        
+    mediaPartida = 2        
 
 class RutinaDeAvanceEnElTiempo:
     def ProximoEvento():
@@ -71,7 +70,7 @@ class LibreriaDeRutinas:
 
 class Arrivo:
     tiempoOcurrencia = -1
-    nombre = "Evento: Arrivo"  #CUIDADO! si se cambia, cambiar en Graficar()
+    nombre = "Evento: Arrivo"  #CUIDADO!  si se cambia, cambiar en Graficar()
     def __init__(self):
         global clock
         self.tiempoOcurrencia = ListaEventos.tiempoArribo
@@ -79,7 +78,7 @@ class Arrivo:
 
 
     def RutinaEventos(self):
-        global estadoServidor,tiempoDeArrivos,tiempoUltimoEvento, contadorDelSistema,clock
+        global estadoServidor,tiempoDeArrivos,tiempoUltimoEvento, contadorDelSistema,clock,NCCD,acumuladoDemora
         #actualiza estado del sistema
         
         
@@ -105,8 +104,11 @@ class Arrivo:
                 ListaEventos.tiempoPartida = LibreriaDeRutinas.generarTiempoPartida() + clock
             if(ListaEventos.tiempoPartida == 999999999999999999): #si ya habia anulado la partida.
                 ListaEventos.tiempoPartida = LibreriaDeRutinas.generarTiempoPartida() + clock
-        else:
+        else:                               #si es de la cola al servidor.
             tiempoUltimoEvento = clock
+            NCCD = NCCD + 1
+            acumuladoDemora = acumuladoDemora + (clock - self.tiempoOcurrencia)
+
 
 
 
@@ -116,7 +118,7 @@ class Arrivo:
 
 class Partida:
     tiempoOcurrencia = -1
-    nombre = "Evento: Partida" #CUIDADO! si se cambia, cambiar en Graficar()
+    nombre = "Evento: Partida" #CUIDADO!  si se cambia, cambiar en Graficar()
     def __init__(self):
         global clock
         self.tiempoOcurrencia = ListaEventos.tiempoPartida
@@ -146,7 +148,7 @@ class Partida:
 
         if(activaOtroEvento):
             proxEvento = tiempoDeArrivos[0]
-            proxEvento.nombre = "Evento: De la cola al Servidor." #CUIDADO! cambiar en Graficar()
+            proxEvento.nombre = "Evento: De la cola al Servidor." #CUIDADO!  cambiar en Graficar()
             proxEvento.RutinaEventos()
 
 
@@ -196,7 +198,7 @@ def GraficarEstadoDelSistema(objProxEvent):
      
      print("\u001b[34m")
      print("Tiempos en Cola: \u001b[36m")
-     print("--------" )
+     print("--------")
      print()
      if(len(tiempoDeArrivos) == 0):
          print("Vacio")
@@ -209,6 +211,11 @@ def GraficarEstadoDelSistema(objProxEvent):
      print("\u001b[32mTiempo del ultimo Evento: \u001b[37m" + str(tiempoUltimoEvento))
      print()
      contadorDelSistema = contadorDelSistema + 1
+     print()
+     print("NCCD:" + str(NCCD))
+     print("Acum demora: " + str(acumuladoDemora))
+     print("Area bajo Q(t): " + str(areaBajoQT))
+     print("Area bajo B(t): " + str(areaBajoBT))
 
 
 
