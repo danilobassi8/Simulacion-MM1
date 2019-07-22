@@ -212,10 +212,10 @@ def GraficarEstadoDelSistema(objProxEvent):
      print()
      contadorDelSistema = contadorDelSistema + 1
      print()
-     print("NCCD:" + str(NCCD))
-     print("Acum demora: " + str(acumuladoDemora))
-     print("Area bajo Q(t): " + str(areaBajoQT))
-     print("Area bajo B(t): " + str(areaBajoBT))
+     print("\u001b[35mNCCD: \u001b[31m" + str(NCCD))
+     print("\u001b[35mAcum demora: \u001b[31m" + str(acumuladoDemora))
+     print("\u001b[35mArea bajo Q(t): \u001b[31m" + str(areaBajoQT))
+     print("\u001b[35mArea bajo B(t): \u001b[31m" + str(areaBajoBT))
 
 
 
