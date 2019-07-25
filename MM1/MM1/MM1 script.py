@@ -4,7 +4,7 @@ import math
 import os
 import collections
 
-os.system("cls") #para limpiar la pantalla al iniciar.
+os.system("cls") #para limpiar la pantalla al iniciar la ejecucion del script.
 class RutinaInicio:
     def Inicializacion():
         global clock
