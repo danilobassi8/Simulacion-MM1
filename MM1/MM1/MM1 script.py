@@ -3,7 +3,7 @@ import random as rand
 import math
 import os
 
-os.system("cls") #para limpiar la pantalla al iniciar.
+os.system("cls") #para limpiar la pantalla al iniciar la ejecucion del script.
 class RutinaInicio:
     def Inicializacion():
         global clock
