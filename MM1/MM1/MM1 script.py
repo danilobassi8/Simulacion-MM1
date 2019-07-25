@@ -2,6 +2,7 @@ import numpy as np
 import random as rand
 import math
 import os
+import collections
 
 os.system("cls") #para limpiar la pantalla al iniciar.
 class RutinaInicio:
@@ -28,9 +29,14 @@ class RutinaInicio:
         NCCD = 0
         acumuladoDemora = 0
         areaBajoQT = 0
+        #SOY CAMPI
+        global numeradorQt
+        numeradorQt=[]
+        #SOY CAMPI
         areaBajoBT = 0
         ListaEventos.tiempoArribo = LibreriaDeRutinas.generaTiempoArrivo()
         ListaEventos.tiempoPartida = 999999999999999999 #para q no salga ese num.
+
 class ListaEventos(object):
     tiempoArribo = 0
     tiempoPartida = 0
@@ -81,7 +87,8 @@ class Arrivo:
         global estadoServidor,tiempoDeArrivos,tiempoUltimoEvento, contadorDelSistema,clock,NCCD,acumuladoDemora
         #actualiza estado del sistema
         
-        
+        #SOY CAMPI:
+        tiempoAnterior=self.tiempoOcurrencia
 
          
         if(estadoServidor == 1):            #servidor ocupado.
@@ -114,6 +121,34 @@ class Arrivo:
 
 
         GraficarEstadoDelSistema(self)
+
+
+        #SOY CAMPI
+        #tiempoAnterior
+        nuevoTiempo= ListaEventos.tiempoPartida
+
+        numeroCero = 0
+        
+        if(numeroDeClientesEnCola>=len(numeradorQt)): 
+            numeradorQt.append(numeroCero)          #si hay mas clientes en cola que la longitud de la lista numeradorQt, agrego un elemento a la lista
+
+        
+        if(len(numeradorQt)==0): numeradorQt.append(numeroCero) #agrego el primer elemento a la lista
+
+        numeroASumar = numeradorQt[numeroDeClientesEnCola] + (nuevoTiempo - tiempoAnterior)     #al tiempo que tenia en la posicion numerodDeClienteEnCola le sumo el nuevo intervalo de tiempo.
+        numeradorQt[numeroDeClientesEnCola] = numeroASumar 
+
+
+        acum=0
+        long=len(numeradorQt)
+        for x in range (long):
+            Qt=x*numeradorQt[x]
+            acum = acum +Qt
+
+        global areaBajoQT
+        areaBajoQT = acum/clock
+
+        #SOY CAMPI
 
 
 class Partida:
@@ -152,10 +187,6 @@ class Partida:
             proxEvento.RutinaEventos()
 
 
-
-
-
-    
 
 
 def GraficarEstadoDelSistema(objProxEvent):
@@ -219,7 +250,6 @@ def GraficarEstadoDelSistema(objProxEvent):
 
 
 
-
 RutinaInicio.Inicializacion()
 GraficarEstadoDelSistema(0)
 
@@ -227,5 +257,3 @@ sigueSimulacion = True
 while(sigueSimulacion):
     objProxEvent = RutinaDeAvanceEnElTiempo.ProximoEvento()
     objProxEvent.RutinaEventos()
-       
-
