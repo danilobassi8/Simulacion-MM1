@@ -98,6 +98,7 @@ class Arrivo:
                 tiempoDeArrivos.append(self)
         else:                               #servidor desocupado
             estadoServidor = 1
+            NCCD = NCCD + 1
 
         tiempoUltimoEvento = self.tiempoOcurrencia
             
@@ -180,7 +181,34 @@ class Partida:
             proxEvento.RutinaEventos()
 
 
+def CalculaAreaBajoBT():
+    global areaBajoBT
+    global estadoServidor
+    global contadorDelSistema
+    global clock
 
+    global estadoAnteriorServidor #variable global que solamente se va a usar en este metodo.
+    global tiempoAlmacenado #variable global que solo se usa para este metodo.
+    
+    if(contadorDelSistema == 0): #la primera vez se setea a falso.
+        estadoAnteriorServidor = 0
+    
+    
+    if(estadoServidor == 1): #el sv esta ocupado?
+        if(estadoAnteriorServidor != 1): #antes estaba DESocupado
+            tiempoAlmacenado = clock
+            estadoAnteriorServidor = 1
+        else:
+            areaBajoBT = clock - tiempoAlmacenado + areaBajoBT
+            tiempoAlmacenado = clock
+            estadoAnteriorServidor = 1
+    else: #el sv esta desocupado?
+        if(estadoAnteriorServidor != 1): #antes estaba DESocupado
+            pass
+        else:
+            areaBajoBT = clock - tiempoAlmacenado + areaBajoBT
+            tiempoAlmacenado = clock
+            estadoAnteriorServidor = 0
 
 def GraficarEstadoDelSistema(objProxEvent):
      global clock
@@ -195,6 +223,10 @@ def GraficarEstadoDelSistema(objProxEvent):
      global contadorDelSistema     
      
      numeroDeClientesEnCola = len(tiempoDeArrivos)
+
+       #calculo el area bajo b(t).  lo meto aca porque es mas facil y porque se
+     #agrego despues.
+     CalculaAreaBajoBT()
      #----------------------------------------------------------------------------------------------------#
      print("\u001b[35m#---------------------------------------------\u001b[35;1m[" + str(contadorDelSistema) + "]\u001b[0m\u001b[35m----------------------------------------------------#\u001b[0m")
      
