@@ -74,14 +74,38 @@ class LibreriaDeRutinas:
         r = LibreriaDeRutinas.generarNumeroAleatorio()
         return -1 * ListaEventos.mediaPartida * math.log(r,math.e)
 
+def funcionCampi(numeradorQt,numeroDeClientesEnCola,tiempoAnterior,tiempoPartida):
+        #SOY CAMPI
+        
+        if(numeroDeClientesEnCola>=len(numeradorQt)): 
+            numeradorQt.append(0)          #si hay mas clientes en cola que la longitud de la lista numeradorQt, agrego un elemento a la lista
+
+        
+        if(len(numeradorQt)==0): numeradorQt.append(0) #agrego el primer elemento a la lista
+
+        numeroASumar = numeradorQt[numeroDeClientesEnCola] + (tiempoPartida - tiempoAnterior)     #al tiempo que tenia en la posicion numerodDeClienteEnCola le sumo el nuevo intervalo de tiempo.
+        numeradorQt[numeroDeClientesEnCola] = numeroASumar 
+
+
+        acum=0 
+        for x in range (len(numeradorQt)):  #recorro todo el arreglo numeradorQt y sumo el producto de lo que está en la posicion i por la posicion i
+            Qt=x*numeradorQt[x]
+            acum = acum +Qt
+
+        
+        
+        return acum
+        #SOY CAMPI
+
+
+
 class Arrivo:
     tiempoOcurrencia = -1
     nombre = "Evento: Arrivo"  #CUIDADO!  si se cambia, cambiar en Graficar()
     def __init__(self):
         global clock
         self.tiempoOcurrencia = ListaEventos.tiempoArribo
-        
-
+      
 
     def RutinaEventos(self):
         global estadoServidor,tiempoDeArrivos,tiempoUltimoEvento, contadorDelSistema,clock,NCCD,acumuladoDemora
@@ -122,33 +146,11 @@ class Arrivo:
 
         GraficarEstadoDelSistema(self)
 
-
-        #SOY CAMPI
-        #tiempoAnterior
-        nuevoTiempo= ListaEventos.tiempoPartida
-
-        numeroCero = 0
-        
-        if(numeroDeClientesEnCola>=len(numeradorQt)): 
-            numeradorQt.append(numeroCero)          #si hay mas clientes en cola que la longitud de la lista numeradorQt, agrego un elemento a la lista
-
-        
-        if(len(numeradorQt)==0): numeradorQt.append(numeroCero) #agrego el primer elemento a la lista
-
-        numeroASumar = numeradorQt[numeroDeClientesEnCola] + (nuevoTiempo - tiempoAnterior)     #al tiempo que tenia en la posicion numerodDeClienteEnCola le sumo el nuevo intervalo de tiempo.
-        numeradorQt[numeroDeClientesEnCola] = numeroASumar 
-
-
-        acum=0
-        long=len(numeradorQt)
-        for x in range (long):
-            Qt=x*numeradorQt[x]
-            acum = acum +Qt
-
         global areaBajoQT
-        areaBajoQT = acum/clock
+        areaBajoQT = funcionCampi(numeradorQt,numeroDeClientesEnCola,tiempoAnterior,ListaEventos.tiempoPartida)
+        
 
-        #SOY CAMPI
+
 
 
 class Partida:
