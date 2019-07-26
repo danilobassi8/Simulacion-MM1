@@ -31,12 +31,11 @@ class RutinaInicio:
         areaBajoQT = 0
         #SOY CAMPI
         global numeradorQt
-        numeradorQt=[]
+        numeradorQt = []
         #SOY CAMPI
         areaBajoBT = 0
         ListaEventos.tiempoArribo = LibreriaDeRutinas.generaTiempoArrivo()
         ListaEventos.tiempoPartida = 999999999999999999 #para q no salga ese num.
-
 class ListaEventos(object):
     tiempoArribo = 0
     tiempoPartida = 0
@@ -88,7 +87,7 @@ class Arrivo:
         #actualiza estado del sistema
         
         #SOY CAMPI:
-        tiempoAnterior=self.tiempoOcurrencia
+        tiempoAnterior = self.tiempoOcurrencia
 
          
         if(estadoServidor == 1):            #servidor ocupado.
@@ -98,6 +97,7 @@ class Arrivo:
                 tiempoDeArrivos.append(self)
         else:                               #servidor desocupado
             estadoServidor = 1
+            NCCD = NCCD + 1
 
         tiempoUltimoEvento = self.tiempoOcurrencia
             
@@ -112,8 +112,8 @@ class Arrivo:
             if(ListaEventos.tiempoPartida == 999999999999999999): #si ya habia anulado la partida.
                 ListaEventos.tiempoPartida = LibreriaDeRutinas.generarTiempoPartida() + clock
         else:                               #si es de la cola al servidor.
-            tiempoUltimoEvento = clock
             NCCD = NCCD + 1
+            tiempoUltimoEvento = clock
             acumuladoDemora = acumuladoDemora + (clock - self.tiempoOcurrencia)
 
 
@@ -125,32 +125,36 @@ class Arrivo:
 
         #SOY CAMPI
         #tiempoAnterior
-        nuevoTiempo= ListaEventos.tiempoPartida
+        nuevoTiempo = ListaEventos.tiempoPartida
 
         numeroCero = 0
         
-        if(numeroDeClientesEnCola>=len(numeradorQt)): 
-            numeradorQt.append(numeroCero)          #si hay mas clientes en cola que la longitud de la lista numeradorQt, agrego un elemento a la lista
+        if(numeroDeClientesEnCola >= len(numeradorQt)): 
+            numeradorQt.append(numeroCero)          #si hay mas clientes en cola que la longitud de la lista numeradorQt,
+                                                    #agrego un elemento a la
+                                                                                              #lista
 
         
-        if(len(numeradorQt)==0): numeradorQt.append(numeroCero) #agrego el primer elemento a la lista
+        if(len(numeradorQt) == 0): numeradorQt.append(numeroCero) #agrego el primer elemento a la lista
 
-        numeroASumar = numeradorQt[numeroDeClientesEnCola] + (nuevoTiempo - tiempoAnterior)     #al tiempo que tenia en la posicion numerodDeClienteEnCola le sumo el nuevo intervalo de tiempo.
+        numeroASumar = numeradorQt[numeroDeClientesEnCola] + (nuevoTiempo - tiempoAnterior)     #al tiempo que tenia en la posicion numerodDeClienteEnCola le sumo el
+                                                                                                #nuevo
+                                                                                                                                                                                           #intervalo
+                                                                                                                                                                                                                                                                                      #de
+                                                                                                                                                                                                                                                                                                                                                                                 #tiempo.
         numeradorQt[numeroDeClientesEnCola] = numeroASumar 
 
 
-        acum=0
-        long=len(numeradorQt)
-        for x in range (long):
-            Qt=x*numeradorQt[x]
-            acum = acum +Qt
+        acum = 0
+        long = len(numeradorQt)
+        for x in range(long):
+            Qt = x * numeradorQt[x]
+            acum = acum + Qt
 
         global areaBajoQT
-        areaBajoQT = acum/clock
+        areaBajoQT = acum / clock
 
         #SOY CAMPI
-
-
 class Partida:
     tiempoOcurrencia = -1
     nombre = "Evento: Partida" #CUIDADO!  si se cambia, cambiar en Graficar()
@@ -187,6 +191,40 @@ class Partida:
             proxEvento.RutinaEventos()
 
 
+        
+
+    
+    
+def CalculaAreaBajoBT():
+    global areaBajoBT
+    global estadoServidor
+    global contadorDelSistema
+    global clock
+
+    global estadoAnteriorServidor #variable global que solamente se va a usar en este metodo.
+    global tiempoAlmacenado #variable global que solo se usa para este metodo.
+    
+    if(contadorDelSistema == 0): #la primera vez se setea a falso.
+        estadoAnteriorServidor = 0
+    
+    
+    if(estadoServidor == 1): #el sv esta ocupado?
+        if(estadoAnteriorServidor != 1): #antes estaba DESocupado
+            tiempoAlmacenado = clock
+            estadoAnteriorServidor = 1
+        else:
+            areaBajoBT = clock - tiempoAlmacenado + areaBajoBT
+            tiempoAlmacenado = clock
+            estadoAnteriorServidor = 1
+    else: #el sv esta desocupado?
+        if(estadoAnteriorServidor != 1): #antes estaba DESocupado
+            pass
+        else:
+            areaBajoBT = clock - tiempoAlmacenado + areaBajoBT
+            tiempoAlmacenado = clock
+            estadoAnteriorServidor = 0
+
+
 
 
 def GraficarEstadoDelSistema(objProxEvent):
@@ -199,9 +237,14 @@ def GraficarEstadoDelSistema(objProxEvent):
      global acumuladoDemora
      global areaBajoQT
      global areaBajoBT
-     global contadorDelSistema     
-     
+     global contadorDelSistema
+
      numeroDeClientesEnCola = len(tiempoDeArrivos)
+
+     #calculo el area bajo b(t).  lo meto aca porque es mas facil y porque se
+     #agrego despues.
+     CalculaAreaBajoBT()
+
      #----------------------------------------------------------------------------------------------------#
      print("\u001b[35m#---------------------------------------------\u001b[35;1m[" + str(contadorDelSistema) + "]\u001b[0m\u001b[35m----------------------------------------------------#\u001b[0m")
      
@@ -247,6 +290,7 @@ def GraficarEstadoDelSistema(objProxEvent):
      print("\u001b[35mAcum demora: \u001b[31m" + str(acumuladoDemora))
      print("\u001b[35mArea bajo Q(t): \u001b[31m" + str(areaBajoQT))
      print("\u001b[35mArea bajo B(t): \u001b[31m" + str(areaBajoBT))
+
 
 
 
