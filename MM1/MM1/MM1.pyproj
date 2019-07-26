@@ -11,7 +11,8 @@
     <OutputPath>.</OutputPath>
     <Name>MM1</Name>
     <RootNamespace>MM1</RootNamespace>
-    <InterpreterId>Global|ContinuumAnalytics|Anaconda36-64</InterpreterId>
+    <InterpreterId>
+    </InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
