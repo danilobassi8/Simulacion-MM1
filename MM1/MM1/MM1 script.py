@@ -1,11 +1,11 @@
-import numpy as np
+﻿import numpy as np
 import random as rand
 import math
 import os
-import collections
+import collections 
 
 
-os.system("cls") #para limpiar la pantalla al iniciar la ejecucion del script.
+os.system("cls") #para limpiar la pantalla al iniciar la ejecucion del script. vasd
 class RutinaInicio:
     def Inicializacion():
         global clock
