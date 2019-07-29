@@ -41,8 +41,8 @@ class ListaEventos(object):
     tiempoArribo = 0
     tiempoPartida = 0
 
-    mediaArribos = 5
-    mediaPartida = 8        
+    mediaArribos = 1
+    mediaPartida = 1/8        
 
 class RutinaDeAvanceEnElTiempo:
     def ProximoEvento():
