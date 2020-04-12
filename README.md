@@ -19,4 +19,5 @@ Esto fue un trabajo practico para la cátedra de **simulación** en la **Univers
 Como se mencionó anteriormente, se debe resolver un sistema M/M/1 con las siguientes caracteristicas:
 
 λ = 1 cli/ut
+
 μ = 8 cli/ut
