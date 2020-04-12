@@ -18,11 +18,5 @@ Esto fue un trabajo practico para la cátedra de **simulación** en la **Univers
 
 Como se mencionó anteriormente, se debe resolver un sistema M/M/1 con las siguientes caracteristicas:
 
-```mermaid
-graph LR
-A[Arribos <br> λ=1 cli/ut]--> B((Servidor <br> μ = 1/8 cli/ut))
-B --> D[salida]
-style A fill:#24ACF2
-style D fill:#24ACF2
-style B fill:#F0F0F0
-```
+λ = 1 cli/ut
+μ = 8 cli/ut
