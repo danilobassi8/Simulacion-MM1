@@ -26,6 +26,3 @@ style A fill:#24ACF2
 style D fill:#24ACF2
 style B fill:#F0F0F0
 ```
-```mermaid
-
-```
